@@ -9,15 +9,15 @@ size *116 Bytes for RV32IC*
 Code assumes a 2 byte header (little endian size) and then \
 the raw compressed BLOCK in lz4 format (up to 64 kB).\
 Compressed for example with `lz4 -12 -B4` and header + tail cropped.\
-(See Makefile).\
+(See Makefile).
 
 ## application in bare metal assembler
 packedearth.asm is a bare metal assembly example for the Longan Nano.\
 It displays an lz4 compressed image (160x80) of the earth map in 565 format (25.6 KB).\
 Total size: *4624 Bytes.*\
-![screenshot](http://martinwendt.de/earth2.png)\
+![screenshot](http://martinwendt.de/earth2.png)
 
 The decoder and example code assembles well with the wonderful [bronzebeard](https://github.com/theandrew168/bronzebeard).\
-\
+
 Licensed under the 3-Clause BSD License
 Copyright 2021, Martin Wendt
