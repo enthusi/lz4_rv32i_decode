@@ -16,7 +16,7 @@ Compressed for example with `lz4 -12 -B4` and header + tail cropped.\
 It displays an lz4 compressed image (160x80) of the earth map in 565 format (25.6 KB).\
 Total size: *4624 Bytes.*\
 ![screenshot](http://martinwendt.de/earth2.png)
-
+ 
 The decoder and example code assembles well with the wonderful [bronzebeard](https://github.com/theandrew168/bronzebeard).
 
 ### usage
