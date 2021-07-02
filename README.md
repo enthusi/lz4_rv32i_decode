@@ -24,6 +24,12 @@ The decoder and example code assembles well with the wonderful [bronzebeard](htt
 make
 make flash
 ```
+### including in own code
+You can of course either assembler the source or even simply include the 
+binary 'blob' `lz4depack.bin` at any arbitrary position (aligned to 16bit with C extention).
+
+The routine uses only relative short jumps and is therefor fully relocatable in binary form.\
+It simply requires `a0` and `s0` to be set before call. `a1,a2,a3,a4,a5,a6` are used and NOT saved.
 
 Licensed under the 3-Clause BSD License
 Copyright 2021, Martin Wendt
