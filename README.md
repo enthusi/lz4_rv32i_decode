@@ -19,5 +19,12 @@ Total size: *4624 Bytes.*\
 
 The decoder and example code assembles well with the wonderful [bronzebeard](https://github.com/theandrew168/bronzebeard).
 
+### usage
+```
+make
+make flash
+```
+
 Licensed under the 3-Clause BSD License
 Copyright 2021, Martin Wendt
+
