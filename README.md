@@ -20,8 +20,7 @@ Total size: *4624 Bytes.*\
 ![screenshot](http://martinwendt.de/earth2.png)
  
 The decoder and example code assembles well with the wonderful [bronzebeard](https://github.com/theandrew168/bronzebeard).
-
-Another bare metal example is here: [mandelbrotin under 1kb](https://github.com/enthusi/mandelbrot_riscv_assembler).
+Another bare metal example is here: [mandelbrot in under 1kb](https://github.com/enthusi/mandelbrot_riscv_assembler).
 
 ### usage
 ```
