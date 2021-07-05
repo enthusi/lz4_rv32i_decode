@@ -11,8 +11,8 @@ the raw compressed BLOCK in lz4 format (up to 64 kB).\
 Compressed for example with `lz4 -12 -B4` and header + tail cropped.\
 (See Makefile).
 
-Now it is even listed on the official [LZ4 page](http://lz4.github.io/lz4/). ;-)
-
+Now it is even listed on the official [LZ4 page](http://lz4.github.io/lz4/). ;-)\
+Another bare metal example is here: [mandelbrot in under 1kb](https://github.com/enthusi/mandelbrot_riscv_assembler).
 ## application in bare metal assembler
 `packedearth.asm` is a bare metal assembly example for the Longan Nano.\
 It displays an lz4 compressed image (160x80) of the earth map in 565 format (25.6 KB).\
@@ -20,8 +20,6 @@ Total size: *4624 Bytes.*\
 ![screenshot](http://martinwendt.de/earth2.png)
  
 The decoder and example code assembles well with the wonderful [bronzebeard](https://github.com/theandrew168/bronzebeard).
-Another bare metal example is here: [mandelbrot in under 1kb](https://github.com/enthusi/mandelbrot_riscv_assembler).
-
 ### usage
 ```
 make
