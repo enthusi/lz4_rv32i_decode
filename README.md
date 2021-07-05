@@ -21,6 +21,8 @@ Total size: *4624 Bytes.*\
  
 The decoder and example code assembles well with the wonderful [bronzebeard](https://github.com/theandrew168/bronzebeard).
 
+Another bare metal example is here: [mandelbrotin under 1kb](https://github.com/enthusi/mandelbrot_riscv_assembler).
+
 ### usage
 ```
 make
