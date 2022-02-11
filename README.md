@@ -41,7 +41,7 @@ perl -pe 's/^\s*([a-z_]+)\s*=\s*([a-zA-Z0-9]+)(\s*#.*)?$/#define $1 $2/' lz4depa
 Then assemble, using the C preprocessor:
 ```
 riscv64-unknown-elf-gcc -march=rv32ic -mabi=ilp32 lz4depack.S -c
-``
+```
 And check the code using riscv64-unknown-elf-size or riscv64-unknown-elf-objdump
 
 Licensed under the 3-Clause BSD License
