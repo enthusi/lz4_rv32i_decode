@@ -29,9 +29,9 @@ depack:
    addi a0, a0 ,2
    add a3, a2, a0       #current pos+size=end
 fetch_token:
-   lbu a4, 0(a0)
+   lbu a7, 0(a0)
    addi a0, a0, 1
-   srli a5, a4, 4       #a5 = literal length
+   srli a5, a7, 4       #a5 = literal length
    beqz a5, fetch_offset
    jal fetch_length
 
@@ -40,13 +40,13 @@ fetch_token:
    mv a0, a2
 
 fetch_offset:
-   lbu s1, 0(a0)        #offset is halfword but at byte alignment
-   sub a2, a1, s1
-   lbu s1, 1(a0)
+   lbu a4, 0(a0)        #offset is halfword but at byte alignment
+   sub a2, a1, a4
+   lbu a4, 1(a0)
    addi a0, a0, 2       #placed here for pipeline
-   slli s1, s1, 8
-   sub a2, a2, s1 
-   andi a5, a4, 0x0f    #get offset
+   slli a4, a4, 8
+   sub a2, a2, a4
+   andi a5, a7, 0x0f    #get offset
    jal fetch_length
    addi a5, a5, 4       #match length is >4 bytes
    jal copy_data
@@ -56,15 +56,15 @@ fetch_offset:
    ret
 
 fetch_length:
-   xori s1, a5, 0xf
-   bnez s1, _done       #0x0f indicates further bytes
+   xori a4, a5, 0xf
+   bnez a4, _done       #0x0f indicates further bytes
 
 _loop:   
-   lbu s1, 0(a0)
+   lbu a4, 0(a0)
    addi a0, a0, 1
-   add a5, a5, s1
-   xori s1, s1, 0xff    #0xff indicates further bytes
-   beqz s1, _loop
+   add a5, a5, a4
+   xori a4, a4, 0xff    #0xff indicates further bytes
+   beqz a4, _loop
 _done:
    ret
 
