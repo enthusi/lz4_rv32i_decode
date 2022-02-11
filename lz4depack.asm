@@ -21,55 +21,66 @@
 depack:
    #in: a0 is source
    #    a1 is destination
-   #used: a1,a2,a3,a4,a5,a6 for compliance with C-extension
-   
-   mv t0, ra
-   lhu a2, 0(a0)        #read size from header
-   addi a0, a0 ,2
-   add a3, a2, a0       #current pos+size=end
+   #used: a0,a1,a2,a3,a4,a5 for compliance with C-extension
+   #      a6,t0 additional registers that don't have to be saved
+
+   srcptr = a0
+   dstptr = a1
+
+   srcend = a2
+   cpysrc = a3
+   cpylen = a4
+   c_tmp  = a5				#should be RVC-friendly
+   token  = a6				#RVC not needed
+   alt_ra = t0
+
+   mv alt_ra, ra			#save return address
+   lhu srcend, 0(srcptr)		#read size from header
+   addi srcptr, srcptr, 2
+   add srcend, srcend, srcptr		#current pos+size=end
 fetch_token:
-   lbu a7, 0(a0)
-   addi a0, a0, 1
-   srli a5, a7, 4       #a5 = literal length
-   beqz a5, fetch_offset
+   lbu token, 0(srcptr)
+   addi srcptr, srcptr, 1
+   srli cpylen, token, 4		#cpylen = literal length
+   beqz cpylen, fetch_offset
    jal fetch_length
 
-   mv a2, a0
-   jal copy_data        #literal copy a2 to a1
-   mv a0, a2
+   mv cpysrc, srcptr
+   jal copy_data			#literal copy cpysrc to dstptr
+   mv srcptr, cpysrc
 
 fetch_offset:
-   lbu a4, 0(a0)        #offset is halfword but at byte alignment
-   sub a2, a1, a4
-   lbu a4, 1(a0)
-   addi a0, a0, 2       #placed here for pipeline
-   slli a4, a4, 8
-   sub a2, a2, a4
-   andi a5, a7, 0x0f    #get offset
+   lbu c_tmp, 0(srcptr)			#offset is halfword but at byte alignment
+   sub cpysrc, dstptr, c_tmp
+   lbu c_tmp, 1(srcptr)
+   addi srcptr, srcptr, 2		#placed here for pipeline
+   slli c_tmp, c_tmp, 8
+   sub cpysrc, cpysrc, c_tmp
+   andi cpylen, token, 0x0f		#get offset
    jal fetch_length
-   addi a5, a5, 4       #match length is >4 bytes
+   addi cpylen, cpylen, 4		#match length is >4 bytes
    jal copy_data
-   bge a3, a0, fetch_token #reached end of data?
-   jr t0
+   bge srcend, srcptr, fetch_token	#reached end of data?
+   jr alt_ra				#return
 
 fetch_length:
-   xori a4, a5, 0xf
-   bnez a4, _done       #0x0f indicates further bytes
+   xori c_tmp, cpylen, 0xf
+   bnez c_tmp, _done			#0x0f indicates further bytes
 
 _loop:   
-   lbu a4, 0(a0)
-   addi a0, a0, 1
-   add a5, a5, a4
-   xori a4, a4, 0xff    #0xff indicates further bytes
-   beqz a4, _loop
+   lbu c_tmp, 0(srcptr)
+   addi srcptr, srcptr, 1
+   add cpylen, cpylen, c_tmp
+   xori c_tmp, c_tmp, 0xff		#0xff indicates further bytes
+   beqz c_tmp, _loop
 _done:
    ret
 
 copy_data:
-   lbu a6, 0(a2)
-   addi a2, a2, 1       #placed here for pipeline
-   sb a6, 0(a1)
-   addi a1, a1, 1
-   addi a5, a5, -1
-   bnez a5, copy_data
+   lbu c_tmp, 0(cpysrc)
+   addi cpysrc, cpysrc, 1		#placed here for pipeline
+   sb c_tmp, 0(dstptr)
+   addi dstptr, dstptr, 1
+   addi cpylen, cpylen, -1
+   bnez cpylen, copy_data
    ret
