@@ -3,7 +3,7 @@ ASM=bronzebeard --compress
 DFU=python3 -m bronzebeard.dfu 28e9:0189
 PACKER=lz4depack
 
-$(SOURCE).bin: $(SOURCE).asm earth2prep.dat
+$(SOURCE).bin: $(SOURCE).asm earth2prep.dat $(PACKER).asm
 	$(ASM)  $(SOURCE).asm -o $(SOURCE).bin
 	
 lz4:	$(PACKER).asm

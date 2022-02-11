@@ -30,7 +30,19 @@ You can of course either assemble the source as you need or even simply include 
 binary 'blob' `lz4depack.bin` at any arbitrary position (aligned to 16bit with C extention).
 
 The routine uses only relative short jumps and is therefore fully relocatable even in binary form.\
-It simply requires `a0` and `s0` to be set before call. `a1,a2,a3,a4,a5,a6` are used and NOT saved.
+It simply requires `a0` and `a1` to be set before call. `a1,a2,a3,a4,a5,a6,t0` are used and NOT saved.
+
+### Assemble with GCC instead of Bronzebeard
+As kindly suggested by [brucehoult](https://github.com/brucehoult)
+you can make the register defines gcc/gas compatible:
+```
+perl -pe 's/^\s*([a-z_]+)\s*=\s*([a-zA-Z0-9]+)(\s*#.*)?$/#define $1 $2/' lz4depack.asm >lz4depack.S
+```
+Then assemble, using the C preprocessor:
+```
+riscv64-unknown-elf-gcc -march=rv32ic -mabi=ilp32 lz4depack.S -c
+``
+And check the code using riscv64-unknown-elf-size or riscv64-unknown-elf-objdump
 
 Licensed under the 3-Clause BSD License
 Copyright 2021, Martin Wendt
