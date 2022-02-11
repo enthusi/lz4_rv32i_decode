@@ -48,6 +48,7 @@ fetch_token:
    mv cpysrc, srcptr
    jal copy_data			#literal copy cpysrc to dstptr
    mv srcptr, cpysrc
+   bge srcptr, srcend, ret		#reached end of data? lz4 always ends with a literal
 
 fetch_offset:
    lbu c_tmp, 0(srcptr)			#offset is halfword but at byte alignment
@@ -60,7 +61,8 @@ fetch_offset:
    jal fetch_length
    addi cpylen, cpylen, 4		#match length is >4 bytes
    jal copy_data
-   bge srcend, srcptr, fetch_token	#reached end of data?
+   j fetch_token
+ret:
    jr alt_ra				#return
 
 fetch_length:
