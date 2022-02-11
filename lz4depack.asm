@@ -23,8 +23,7 @@ depack:
    #    a1 is destination
    #used: a1,a2,a3,a4,a5,a6 for compliance with C-extension
    
-   addi	sp,sp,-16
-   sw	ra, 0(sp)
+   mv t0, ra
    lhu a2, 0(a0)        #read size from header
    addi a0, a0 ,2
    add a3, a2, a0       #current pos+size=end
@@ -51,9 +50,7 @@ fetch_offset:
    addi a5, a5, 4       #match length is >4 bytes
    jal copy_data
    bge a3, a0, fetch_token #reached end of data?
-   lw ra, 0(sp)
-   addi sp, sp, 16
-   ret
+   jr t0
 
 fetch_length:
    xori a4, a5, 0xf
