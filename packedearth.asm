@@ -19,7 +19,7 @@ main:
    
 show_packed_earth:
     li a0, gfx_data
-    li s0, RAM
+    li a1, RAM
     jal depack #depack lz4 compressed data into RAM
     
     li  a5, GPIO_BASE_ADDR_B
@@ -389,7 +389,7 @@ bytes   0 #end of data
 align 2
 #begin_depack:
 #a0 source
-#s0 destination
+#a1 destination
 include lz4depack.asm
 
 gfx_data:
